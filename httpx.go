@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"extosoft-devsecops/hrex-http/httpx/logger"
+	"github.com/extosoft-devsecops/httpx/logger"
 )
 
 const (

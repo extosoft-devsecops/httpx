@@ -1,6 +1,7 @@
 # hrex-httpx
 
-A robust, production-ready HTTP client library for Go with built-in retry logic, exponential backoff, and comprehensive logging.
+A robust, production-ready HTTP client library for Go with built-in retry logic, exponential backoff, and comprehensive
+logging.
 
 ## Features
 
@@ -26,31 +27,31 @@ go get extosoft.com/hrex/httpx
 package main
 
 import (
-    "context"
-    "fmt"
-    "log/slog"
-    "net/http"
-    "os"
+	"context"
+	"fmt"
+	"log/slog"
+	"net/http"
+	"os"
 
-    "extosoft.com/hrex/httpx"
+	"extosoft-devsecops/hrex-http/httpx"
 )
 
 func main() {
-    // Create a logger
-    logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	// Create a logger
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
-    // Create HTTP client with default settings
-    client := httpx.New(logger)
+	// Create HTTP client with default settings
+	client := httpx.New(logger)
 
-    // Make a request
-    req, _ := http.NewRequest("GET", "https://api.example.com/data", nil)
-    resp, err := client.Do(context.Background(), req)
-    if err != nil {
-        panic(err)
-    }
-    defer resp.Body.Close()
+	// Make a request
+	req, _ := http.NewRequest("GET", "https://api.example.com/data", nil)
+	resp, err := client.Do(context.Background(), req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 
-    fmt.Printf("Status: %d\n", resp.StatusCode)
+	fmt.Printf("Status: %d\n", resp.StatusCode)
 }
 ```
 
@@ -58,16 +59,17 @@ func main() {
 
 ```go
 client := httpx.New(logger,
-    httpx.WithRetries(5),                          // Retry up to 5 times
-    httpx.WithTimeout(30*time.Second),             // 30 second timeout
-    httpx.WithRetryDelay(200*time.Millisecond),    // Initial retry delay
-    httpx.WithMaxRetryWait(10*time.Second),        // Maximum retry delay
+httpx.WithRetries(5), // Retry up to 5 times
+httpx.WithTimeout(30*time.Second), // 30 second timeout
+httpx.WithRetryDelay(200*time.Millisecond), // Initial retry delay
+httpx.WithMaxRetryWait(10*time.Second), // Maximum retry delay
 )
 ```
 
 ## Configuration Options
 
 ### `WithRetries(n int)`
+
 Sets the maximum number of retry attempts (default: 1).
 
 ```go
@@ -75,6 +77,7 @@ client := httpx.New(logger, httpx.WithRetries(3))
 ```
 
 ### `WithTimeout(duration time.Duration)`
+
 Sets the HTTP client timeout (default: 10 seconds).
 
 ```go
@@ -82,6 +85,7 @@ client := httpx.New(logger, httpx.WithTimeout(30*time.Second))
 ```
 
 ### `WithRetryDelay(duration time.Duration)`
+
 Sets the initial retry delay for exponential backoff (default: 100ms).
 
 ```go
@@ -89,6 +93,7 @@ client := httpx.New(logger, httpx.WithRetryDelay(200*time.Millisecond))
 ```
 
 ### `WithMaxRetryWait(duration time.Duration)`
+
 Sets the maximum retry delay cap (default: 5 seconds).
 
 ```go
@@ -116,6 +121,7 @@ The client does NOT retry for:
 ### Exponential Backoff
 
 Retry delays increase exponentially:
+
 - 1st retry: 100ms (configurable)
 - 2nd retry: 200ms
 - 3rd retry: 400ms
@@ -129,14 +135,14 @@ Retry delays increase exponentially:
 The library includes a comprehensive logging round tripper that logs all HTTP requests and responses.
 
 ```go
-import "extosoft.com/hrex/httpx/logger"
+import "extosoft-devsecops/hrex-http/httpx/logger"
 
 // Create a logging round tripper
 transport := logger.NewLoggingRoundTripper(
-    log,
-    http.DefaultTransport,
-    logger.WithBodyLogging(true),        // Enable body logging
-    logger.WithMaxBodySize(5*1024*1024), // 5MB max body size
+log,
+http.DefaultTransport,
+logger.WithBodyLogging(true), // Enable body logging
+logger.WithMaxBodySize(5*1024*1024), // 5MB max body size
 )
 
 client := &http.Client{Transport: transport}
@@ -145,6 +151,7 @@ client := &http.Client{Transport: transport}
 ### Logging Options
 
 #### `WithBodyLogging(enabled bool)`
+
 Enable/disable request and response body logging (default: false).
 
 ```go
@@ -152,6 +159,7 @@ logger.WithBodyLogging(true)
 ```
 
 #### `WithMaxBodySize(size int64)`
+
 Set maximum body size to log in bytes (default: 5MB).
 
 ```go
@@ -190,7 +198,7 @@ req.Header.Set("Content-Type", "application/json")
 
 resp, err := client.Do(context.Background(), req)
 if err != nil {
-    log.Fatal(err)
+log.Fatal(err)
 }
 defer resp.Body.Close()
 ```
@@ -204,10 +212,10 @@ defer cancel()
 req, _ := http.NewRequest("GET", "https://api.example.com/slow-endpoint", nil)
 resp, err := client.Do(ctx, req)
 if err != nil {
-    if errors.Is(err, context.DeadlineExceeded) {
-        log.Println("Request timed out")
-    }
-    return
+if errors.Is(err, context.DeadlineExceeded) {
+log.Println("Request timed out")
+}
+return
 }
 defer resp.Body.Close()
 ```
@@ -216,9 +224,9 @@ defer resp.Body.Close()
 
 ```go
 client := httpx.New(logger,
-    httpx.WithRetries(5),
-    httpx.WithRetryDelay(500*time.Millisecond),
-    httpx.WithMaxRetryWait(30*time.Second),
+httpx.WithRetries(5),
+httpx.WithRetryDelay(500*time.Millisecond),
+httpx.WithMaxRetryWait(30*time.Second),
 )
 
 req, _ := http.NewRequest("GET", "https://flaky-api.example.com/data", nil)
@@ -245,7 +253,7 @@ hrex-httpx/
 
 ```go
 type Client interface {
-    Do(ctx context.Context, req *http.Request) (*http.Response, error)
+Do(ctx context.Context, req *http.Request) (*http.Response, error)
 }
 ```
 
@@ -289,6 +297,7 @@ The client reads and stores request bodies in memory to enable retries. For very
 ### Retry Delays
 
 Default retry delays are optimized for most use cases:
+
 - Initial delay: 100ms
 - Maximum delay: 5s
 
@@ -296,7 +305,8 @@ Adjust based on your API's rate limiting and timeout policies.
 
 ### Context Cancellation
 
-The client respects context cancellation and will immediately stop retrying when the context is cancelled. Use appropriate timeouts:
+The client respects context cancellation and will immediately stop retrying when the context is cancelled. Use
+appropriate timeouts:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -321,7 +331,7 @@ Always close response bodies to prevent resource leaks:
 ```go
 resp, err := client.Do(ctx, req)
 if err != nil {
-    return err
+return err
 }
 defer resp.Body.Close()
 ```
@@ -347,9 +357,9 @@ Configure timeouts based on your API's expected response times:
 
 ```go
 client := httpx.New(logger,
-    httpx.WithTimeout(30*time.Second),      // Overall request timeout
-    httpx.WithRetries(3),                   // Max 3 retries
-    httpx.WithMaxRetryWait(10*time.Second), // Max 10s between retries
+httpx.WithTimeout(30*time.Second), // Overall request timeout
+httpx.WithRetries(3), // Max 3 retries
+httpx.WithMaxRetryWait(10*time.Second), // Max 10s between retries
 )
 ```
 
@@ -362,20 +372,21 @@ The client returns detailed error messages:
 ```go
 resp, err := client.Do(ctx, req)
 if err != nil {
-    // Check for specific error types
-    if errors.Is(err, context.DeadlineExceeded) {
-        // Timeout
-    } else if errors.Is(err, context.Canceled) {
-        // Context cancelled
-    } else {
-        // Other errors (network, etc.)
-    }
+// Check for specific error types
+if errors.Is(err, context.DeadlineExceeded) {
+// Timeout
+} else if errors.Is(err, context.Canceled) {
+// Context cancelled
+} else {
+// Other errors (network, etc.)
+}
 }
 ```
 
 ### Retry Error Messages
 
 When retries are exhausted:
+
 ```
 request failed after 3 attempts: <original error>
 ```
@@ -392,6 +403,7 @@ Copyright © 2025 Extosoft
 ## Contributing
 
 Contributions are welcome! Please ensure:
+
 1. All tests pass: `go test ./...`
 2. Code coverage remains high
 3. Follow existing code style
@@ -404,6 +416,7 @@ For issues, questions, or contributions, please contact the Extosoft team.
 ## Changelog
 
 ### v1.0.0 (2025-12-12)
+
 - Initial release
 - Smart retry logic with exponential backoff
 - Comprehensive HTTP logging
