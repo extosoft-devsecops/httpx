@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"extosoft.com/hrex/httpx/logger"
+	"extosoft-devsecops/hrex-http/httpx/logger"
 )
 
 // mockRoundTripper implements http.RoundTripper for testing

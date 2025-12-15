@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"extosoft-devsecops/hrex-http/httpx"
 	"fmt"
 	"io"
 	"log"
@@ -10,8 +11,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"extosoft.com/hrex/httpx"
 )
 
 func main() {

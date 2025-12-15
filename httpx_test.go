@@ -3,6 +3,7 @@ package httpx_test
 import (
 	"context"
 	"errors"
+	"extosoft-devsecops/hrex-http/httpx"
 	"io"
 	"log/slog"
 	"net/http"
@@ -10,8 +11,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"extosoft.com/hrex/httpx"
 )
 
 // mockRoundTripper implements http.RoundTripper for testing
