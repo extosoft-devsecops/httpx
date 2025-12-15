@@ -33,7 +33,7 @@ import (
 	"net/http"
 	"os"
 
-	"extosoft-devsecops/hrex-http/httpx"
+	"github.com/extosoft-devsecops/httpx"
 )
 
 func main() {
